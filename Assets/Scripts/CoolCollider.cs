@@ -13,31 +13,31 @@ public class CoolCollider : MonoBehaviour
 	private float hapticsClipLength;
 	private float hapticsTimeout;
 
-	void OnTriggerEnter(Collider c)
-	{
-		if (useHaptics)
-			PlayHaptics(c);
+// 	void OnTriggerEnter(Collider c)
+// 	{
+// 		if (useHaptics)
+// 			PlayHaptics(c);
 
-	}
+// 	}
 
-	void OnCollisionEnter(Collision c)
-	{
-		if (useHaptics)
-			PlayHaptics(c.collider);
+// 	void OnCollisionEnter(Collision c)
+// 	{
+// 		if (useHaptics)
+// 			PlayHaptics(c.collider);
 		
-	}
+// 	}
 
-	void PlayHaptics(Collider c)
-	{
+// 	void PlayHaptics(Collider c)
+// 	{
 
 
 
-		if (controller == OVRInput.Controller.LTouch)
-			OVRHaptics.LeftChannel.Preempt(hapticsClip);
-		else
-			OVRHaptics.RightChannel.Preempt(hapticsClip);
-	}
+// 		if (controller == OVRInput.Controller.LTouch)
+// 			OVRHaptics.LeftChannel.Preempt(hapticsClip);
+// 		else
+// 			OVRHaptics.RightChannel.Preempt(hapticsClip);
+// 	}
 
-    OVRInput.Controller controller = side == Side.Left ? OVRInput.Controller.LTouch : OVRInput.Controller.RTouch;
-    controller.SendHapticImpulse(0.5f, 0.5f, 0.5f);
+//     OVRInput.Controller controller = side == Side.Left ? OVRInput.Controller.LTouch : OVRInput.Controller.RTouch;
+//     controller.SendHapticImpulse(0.5f, 0.5f, 0.5f);	
 }
