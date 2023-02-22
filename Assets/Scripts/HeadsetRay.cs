@@ -7,13 +7,13 @@ public class HeadsetRay : MonoBehaviour
     public AudioSource meters20;
     public AudioSource meters10;
     public AudioSource meters5;
+    public TextMesh distanceText;
+
     // Start is called before the first frame update
     void Start()
     {
         meters20 = GetComponent<AudioSource>();
-        meters10 = GetComponent<AudioSource>();
-        meters5 = GetComponent<AudioSource>();
-
+        meters20.Stop();
     }
 
     // Update is called once per frame
@@ -24,33 +24,30 @@ public class HeadsetRay : MonoBehaviour
                 Camera.main.transform.position,
                 Camera.main.transform.forward,
                 out hitInfo,
-                5.0f,
-                Physics.DefaultRaycastLayers))
-        {
-            meters5.Play();
-            print(hitInfo.distance);
-            
-        }
-        if (Physics.Raycast(
-                Camera.main.transform.position,
-                Camera.main.transform.forward,
-                out hitInfo,
                 20.0f,
                 Physics.DefaultRaycastLayers))
         {
-            meters20.Play();
-            print(hitInfo.distance);
-            
-        }
-        if (Physics.Raycast(
-                Camera.main.transform.position,
-                Camera.main.transform.forward,
-                out hitInfo,
-                10.0f,
-                Physics.DefaultRaycastLayers))
-        {
-            meters10.Play();
-            print(hitInfo.distance);
+            if (hitInfo.distance < 5)
+            {
+                distanceText.text = "5m distance: " + hitInfo.distance.ToString();
+                meters20.Stop();
+                meters10.Stop();
+                meters5.Play();
+            }
+            else if (hitInfo.distance > 5 && hitInfo.distance < 10)
+            {
+                distanceText.text = "10m distance: " + hitInfo.distance.ToString();
+                meters20.Stop();
+                meters10.Play();
+                meters5.Stop();
+            }
+            else if (hitInfo.distance > 10 && hitInfo.distance < 20)
+            {
+                distanceText.text = "20m distance: " + hitInfo.distance.ToString();
+                meters20.Play();
+                meters10.Stop();
+                meters5.Stop();
+            }
             
         }
     }

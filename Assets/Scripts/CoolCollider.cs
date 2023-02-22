@@ -5,11 +5,6 @@ public class CoolCollider : MonoBehaviour
 {
 	public OVRInput.Controller controller;
 
-	private AudioSource cachedSource;
-	private OVRHapticsClip hapticsClip;
-	private float hapticsClipLength;
-	private float hapticsTimeout;
-
 	public TextMesh collisionText;
 
 	private List<UnityEngine.XR.InputDevice> trackedDevices;
