@@ -30,6 +30,7 @@ public class HeadsetRay : MonoBehaviour
             if (hitInfo.distance < 5)
             {
                 distanceText.text = "5m distance: " + hitInfo.distance.ToString();
+                
                 meters20.Stop();
                 meters10.Stop();
                 meters5.Play();
