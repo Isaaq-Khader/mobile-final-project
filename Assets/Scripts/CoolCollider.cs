@@ -3,9 +3,6 @@ using UnityEngine;
 
 public class CoolCollider : MonoBehaviour
 {
-	public bool useHaptics = true;
-	public bool useSound = true;
-
 	public OVRInput.Controller controller;
 
 	private AudioSource cachedSource;
@@ -13,19 +10,54 @@ public class CoolCollider : MonoBehaviour
 	private float hapticsClipLength;
 	private float hapticsTimeout;
 
-// 	void OnTriggerEnter(Collider c)
-// 	{
-// 		if (useHaptics)
-// 			PlayHaptics(c);
+	public TextMesh collisionText;
 
-// 	}
+	private List<UnityEngine.XR.InputDevice> trackedDevices;
 
-// 	void OnCollisionEnter(Collision c)
-// 	{
-// 		if (useHaptics)
-// 			PlayHaptics(c.collider);
+
+
+	void OnTriggerEnter(Collider c)
+	{
+		SendImpulse(0.5f, 0.1f);
+		collisionText.text = "Trigger Entered";
+	}
+
+	void OnTriggerExit(Collider c)
+	{
+		collisionText.text = "Trigger Exited";
+	}
+
+
+	void SendImpulse(float amplitude, float duration)
+    {
+        foreach (var device in trackedDevices)
+        {
+            if (device.TryGetHapticCapabilities(out var capabilities) &&
+                capabilities.supportsImpulse)
+            {
+				
+                device.SendHapticImpulse(0u, amplitude, duration);
+            }
+        }
+    }
+
+	void OnCollisionEnter(Collision c)
+	{
+		collisionText.text = "Collided";
 		
-// 	}
+	}
+
+	void OnCollisionExit(Collision c)
+	{
+		collisionText.text = "Collision exited";
+	}
+
+	void Update() 
+	{
+		trackedDevices = new List<UnityEngine.XR.InputDevice>();
+        var desiredCharacteristics = UnityEngine.XR.InputDeviceCharacteristics.TrackedDevice;
+        UnityEngine.XR.InputDevices.GetDevicesWithCharacteristics(desiredCharacteristics, trackedDevices);
+	}
 
 // 	void PlayHaptics(Collider c)
 // 	{

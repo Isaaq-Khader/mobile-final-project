@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class HeadsetRay : MonoBehaviour
 {
-    public AudioSource audioData;
+    public AudioSource meters20;
+    public AudioSource meters10;
+    public AudioSource meters5;
     // Start is called before the first frame update
     void Start()
     {
-        audioData = GetComponent<AudioSource>();
+        meters20 = GetComponent<AudioSource>();
+        meters10 = GetComponent<AudioSource>();
+        meters5 = GetComponent<AudioSource>();
 
     }
 
@@ -20,10 +24,32 @@ public class HeadsetRay : MonoBehaviour
                 Camera.main.transform.position,
                 Camera.main.transform.forward,
                 out hitInfo,
+                5.0f,
+                Physics.DefaultRaycastLayers))
+        {
+            meters5.Play();
+            print(hitInfo.distance);
+            
+        }
+        if (Physics.Raycast(
+                Camera.main.transform.position,
+                Camera.main.transform.forward,
+                out hitInfo,
                 20.0f,
                 Physics.DefaultRaycastLayers))
         {
-            audioData.PlayOneShot(audioData.clip, 0.5f);
+            meters20.Play();
+            print(hitInfo.distance);
+            
+        }
+        if (Physics.Raycast(
+                Camera.main.transform.position,
+                Camera.main.transform.forward,
+                out hitInfo,
+                10.0f,
+                Physics.DefaultRaycastLayers))
+        {
+            meters10.Play();
             print(hitInfo.distance);
             
         }
