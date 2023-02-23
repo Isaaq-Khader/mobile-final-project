@@ -4,16 +4,15 @@ using UnityEngine;
 
 public class HeadsetRay : MonoBehaviour
 {
-    public AudioSource meters20;
-    public AudioSource meters10;
-    public AudioSource meters5;
+    public AudioSource woosh;
+    public AudioSource boom;
+    public AudioSource bonk;
     public TextMesh distanceText;
 
     // Start is called before the first frame update
     void Start()
     {
-        meters20 = GetComponent<AudioSource>();
-        meters20.Stop();
+        woosh = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -30,26 +29,40 @@ public class HeadsetRay : MonoBehaviour
             if (hitInfo.distance < 5)
             {
                 distanceText.text = "5m distance: " + hitInfo.distance.ToString();
-                
-                meters20.Stop();
-                meters10.Stop();
-                meters5.Play();
+                if (!bonk.isPlaying)
+                {
+                    boom.Pause();
+                    bonk.Play();
+                }
             }
-            else if (hitInfo.distance > 5 && hitInfo.distance < 10)
+            else if (hitInfo.distance >= 5 && hitInfo.distance < 10)
             {
                 distanceText.text = "10m distance: " + hitInfo.distance.ToString();
-                meters20.Stop();
-                meters10.Play();
-                meters5.Stop();
+                if (!boom.isPlaying)
+                {
+                    bonk.Pause();
+                    boom.Play();
+                    
+                }
             }
-            else if (hitInfo.distance > 10 && hitInfo.distance < 20)
+            else if (hitInfo.distance >= 10 && hitInfo.distance < 20)
             {
                 distanceText.text = "20m distance: " + hitInfo.distance.ToString();
-                meters20.Play();
-                meters10.Stop();
-                meters5.Stop();
+                if (!bonk.isPlaying)
+                {
+                    boom.Pause();
+                    bonk.Play();
+                }
+            }
+            else
+            {
+                distanceText.text = "greater than 20m distance? " + hitInfo.distance.ToString();
             }
             
+        }
+        else
+        {
+            distanceText.text = "not close enough";
         }
     }
 }
