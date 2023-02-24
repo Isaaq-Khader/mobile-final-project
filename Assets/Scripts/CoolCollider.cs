@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class CoolCollider : MonoBehaviour
 {
-	public OVRInput.Controller controller;
-
 	public TextMesh collisionText;
 
 	private List<UnityEngine.XR.InputDevice> trackedDevices;
@@ -13,8 +11,24 @@ public class CoolCollider : MonoBehaviour
 
 	void OnTriggerEnter(Collider c)
 	{
-		SendImpulse(0.5f, 0.1f);
-		collisionText.text = "Trigger Entered";
+		float amplitude = 0.9f;
+		float duration = 0.3f;
+		collisionText.text = c.gameObject.name;
+		var activated_controller = c.gameObject.name;
+		
+		if (activated_controller == "OVRControllerPrefab_L")
+		{
+			SendImpulse(amplitude, duration, "Oculus Touch Controller - Left");
+		}
+		else if (activated_controller == "OVRControllerPrefab_R")
+		{
+			SendImpulse(amplitude, duration, "Oculus Touch Controller - Right");
+		}
+		else if (activated_controller == "OVRPlayerController_Both")
+		{
+			SendImpulseBoth(amplitude, duration);
+		}
+
 	}
 
 	void OnTriggerExit(Collider c)
@@ -22,15 +36,25 @@ public class CoolCollider : MonoBehaviour
 		collisionText.text = "Trigger Exited";
 	}
 
+	void SendImpulse(float amplitude, float duration, string activated_controller)
+    {
+        foreach (var device in trackedDevices)
+        {
+            if (device.TryGetHapticCapabilities(out var capabilities) &&
+                capabilities.supportsImpulse && device.name == activated_controller)
+            {
+                device.SendHapticImpulse(0u, amplitude, duration);
+            }
+        }
+    }
 
-	void SendImpulse(float amplitude, float duration)
+	void SendImpulseBoth(float amplitude, float duration)
     {
         foreach (var device in trackedDevices)
         {
             if (device.TryGetHapticCapabilities(out var capabilities) &&
                 capabilities.supportsImpulse)
             {
-				
                 device.SendHapticImpulse(0u, amplitude, duration);
             }
         }

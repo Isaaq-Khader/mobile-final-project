@@ -4,19 +4,11 @@ using UnityEngine;
 
 public class HeadsetRay : MonoBehaviour
 {
-    public AudioSource woosh;
-    public AudioSource boom;
-    public AudioSource bonk;
+    public AudioSource sonar;
     public TextMesh distanceText;
+    bool audioFinished = true;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        woosh = GetComponent<AudioSource>();
-    }
-
-    // Update is called once per frame
-    void Update()
+    IEnumerator HitRayCoroutine()
     {
         RaycastHit hitInfo;
         if (Physics.Raycast(
@@ -26,32 +18,59 @@ public class HeadsetRay : MonoBehaviour
                 20.0f,
                 Physics.DefaultRaycastLayers))
         {
-            if (hitInfo.distance < 5)
+            if (hitInfo.distance <= 1)
+            {
+                distanceText.text = "1m distance: " + hitInfo.distance.ToString();
+                if (!sonar.isPlaying)
+                {
+                    audioFinished = false;
+                    sonar.Play();
+                    yield return new WaitForSeconds(0.1f);
+                    audioFinished = true;
+                }
+            }
+            else if (hitInfo.distance <= 2)
+            {
+                distanceText.text = "2m distance: " + hitInfo.distance.ToString();
+                if (!sonar.isPlaying)
+                {
+                    audioFinished = false;
+                    sonar.Play();
+                    yield return new WaitForSeconds(0.25f);
+                    audioFinished = true;
+                }
+            }
+            else if (hitInfo.distance < 5 && hitInfo.distance > 2)
             {
                 distanceText.text = "5m distance: " + hitInfo.distance.ToString();
-                if (!bonk.isPlaying)
+                if (!sonar.isPlaying)
                 {
-                    boom.Pause();
-                    bonk.Play();
+                    audioFinished = false;
+                    sonar.Play();
+                    yield return new WaitForSeconds(0.5f);
+                    audioFinished = true;
                 }
             }
             else if (hitInfo.distance >= 5 && hitInfo.distance < 10)
             {
                 distanceText.text = "10m distance: " + hitInfo.distance.ToString();
-                if (!boom.isPlaying)
+                if (!sonar.isPlaying)
                 {
-                    bonk.Pause();
-                    boom.Play();
-                    
+                    audioFinished = false;
+                    sonar.Play();
+                    yield return new WaitForSeconds(1);
+                    audioFinished = true;
                 }
             }
             else if (hitInfo.distance >= 10 && hitInfo.distance < 20)
             {
                 distanceText.text = "20m distance: " + hitInfo.distance.ToString();
-                if (!bonk.isPlaying)
+                if (!sonar.isPlaying)
                 {
-                    boom.Pause();
-                    bonk.Play();
+                    audioFinished = false;
+                    sonar.Play();
+                    yield return new WaitForSeconds(2);
+                    audioFinished = true;
                 }
             }
             else
@@ -63,6 +82,15 @@ public class HeadsetRay : MonoBehaviour
         else
         {
             distanceText.text = "not close enough";
+        }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (audioFinished)
+        {
+            StartCoroutine(HitRayCoroutine());
         }
     }
 }
