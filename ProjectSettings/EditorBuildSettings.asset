@@ -12,11 +12,17 @@ EditorBuildSettings:
     path: Assets/Scenes/Activity Detection.unity
     guid: 8366154d094214b4986292252a7ba142
   - enabled: 0
-    path: Assets/Scenes/Hallway Scene.unity
-    guid: 39cfe7aa0a2d46c47994d8d0308ec663
-  - enabled: 1
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 0
     path: Assets/Scenes/Example Scene.unity
     guid: 807c5badf086075439a2778152e6312e
+  - enabled: 1
+    path: Assets/Scenes/Obstacle Scene.unity
+    guid: 2ada119e3c846ac4ba0eaabfb9e36028
+  - enabled: 0
+    path: Assets/Scenes/Hallway Scene.unity
+    guid: 417a9a11ed48b9e4ea02181d85c71d20
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: a6d6c251eeea8c941946c58696d4162b, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: e930c144514b51a48bf333248ae9e89d, type: 2}
